@@ -26,9 +26,8 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-    vim.keymap.set("n", "<C-n>", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "Toggle file explorer on current file" })
-    -- vim.keymap.set("n", "<Enter>", "<cmd>NvimTreeClose<CR>", { desc = "Close Explorer" })
+    vim.keymap.set("n", "<C-n>", "<cmd> NvimTreeFindFileToggle <CR>", { desc = "Toggle file explorer on current file" })
+    vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeFocus <CR>", { desc = "File explorer focus" })
 
-  end
+  end,
 }

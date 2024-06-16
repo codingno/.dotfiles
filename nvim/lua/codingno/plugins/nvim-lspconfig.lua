@@ -40,8 +40,6 @@ return {
 			},
 		});
 
-		lspconfig.lua_ls.setup{};
-
     lspconfig.tsserver.setup {
       on_attach = on_attach,
       capabilities = capabilities,
@@ -52,26 +50,22 @@ return {
       }
     }
 
-    lspconfig.marksman.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
+    -- List of LSP servers
+    local servers = {
+      'lua_ls',
+      'marksman',
+      'intelephense',
+      'tailwindcss'
     }
 
-    -- lspconfig.phpactor.setup {
-    --   on_attach = on_attach,
-    --   capabilities = capabilities,
-    -- }
+    -- Loop over the list of servers and set them up
+    for _, lsp in ipairs(servers) do
+      require('lspconfig')[lsp].setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+      }
+    end
 
-    lspconfig.intelephense.setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    }
-
-    -- lspconfig.tailwindcss.setup {
-    --   on_attach = on_attach,
-    --   capabilities = capabilities,
-    -- }
-    --
 		-- Global mappings.
 		-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 		vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)

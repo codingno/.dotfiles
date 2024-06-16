@@ -7,8 +7,5 @@ return {
       apm:setup({})
       apm:toggle_monitor()
      vim.keymap.set("n", "<A-t>", function() apm:toggle_monitor() end)
-      -- vim.cmd [[
-      --   command! -nargs=* SetupVimApm lua require('vim-apm'):setup({})
-      -- ]]
     end,
   }

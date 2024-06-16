@@ -2,8 +2,8 @@ vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
 
-opt.relativenumber = true
-opt.number = true
+-- opt.relativenumber = true
+-- opt.number = true
 
 -- tabs & indentation
 opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
@@ -29,3 +29,6 @@ opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line, or
 
 -- clipboard
 opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+
+-- Set the number of lines to keep above and below the cursor
+opt.scrolloff = 15
