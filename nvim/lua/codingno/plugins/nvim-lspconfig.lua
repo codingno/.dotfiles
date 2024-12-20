@@ -5,17 +5,17 @@ return {
 		local capabilities = require('cmp_nvim_lsp').default_capabilities()
 		capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+    local handlers = {
+      ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = require('cmp').config.window.bordered().border,  -- Use cmp's bordered window for hover
+        winhighlight = "Normal:CmpDocumentation,CursorLine:CmpDocumentationSel,Search:None",  -- Optional styling
+      }),
+    }
+
     local on_attach = function(client, bufnr)
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false
 
-      if client.server_capabilities.signatureHelpProvider then
-        require("nvchad.signature").setup(client)
-      end
-
-      if not utils.load_config().ui.lsp_semantic_tokens and client.supports_method "textDocument/semanticTokens" then
-        client.server_capabilities.semanticTokensProvider = nil
-      end
     end
 
 		local lspconfig = require("lspconfig")
@@ -41,6 +41,7 @@ return {
 		});
 
     lspconfig.tsserver.setup {
+      handlers = handlers,
       on_attach = on_attach,
       capabilities = capabilities,
       init_options = {
@@ -55,12 +56,15 @@ return {
       'lua_ls',
       'marksman',
       'intelephense',
-      'tailwindcss'
+      'tailwindcss',
+      'stimulus_ls',
+      'yamlls',
     }
 
     -- Loop over the list of servers and set them up
     for _, lsp in ipairs(servers) do
       require('lspconfig')[lsp].setup {
+        handlers = handlers,
         on_attach = on_attach,
         capabilities = capabilities,
       }

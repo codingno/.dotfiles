@@ -1,10 +1,12 @@
 return {
 	'nvim-telescope/telescope.nvim', tag = '0.1.5',
   lazy = false,
-	dependencies = { 'nvim-lua/plenary.nvim' },
+	dependencies = { 'nvim-lua/plenary.nvim', 'ThePrimeagen/git-worktree.nvim' },
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
+    require('git-worktree').setup()
+    telescope.load_extension("git_worktree")
 
     telescope.setup({
       defaults = {
@@ -18,6 +20,15 @@ return {
         },
       },
     })
+
+    local builtin = require("telescope.builtin")
+
+    vim.keymap.set("n", "<leader>gs", function()
+      builtin.git_status({
+        initial_mode = "normal", -- Open in normal mode by default
+      })
+    end, { desc = "Telescope Git Status in Normal Mode" })
+
   end,
 	keys = {
 		{ "<leader>ff" , "<cmd> Telescope find_files <CR>", desc = "Find files" },
@@ -28,5 +39,7 @@ return {
 		{ "<leader>fh", "<cmd> Telescope help_tags <CR>", desc = "Help page" },
 		{ "<leader>fo", "<cmd> Telescope oldfiles <CR>", desc = "Find oldfiles" },
 		{ "<leader>fz", "<cmd> Telescope current_buffer_fuzzy_find <CR>", desc = "Find in current buffer" },
+		{ "<leader>gwt", "<cmd> Telescope git_worktree git_worktree <CR>", desc = "Git worktree list" },
+		{ "<leader>gwc", "<cmd> Telescope git_worktree create_git_worktree <CR>", desc = "Create git worktree" },
 	}
 }

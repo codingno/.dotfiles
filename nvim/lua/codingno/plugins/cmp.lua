@@ -110,13 +110,15 @@ return {
       },
 
       window = {
-        completion = {
-          side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
-          scrollbar = false,
-        },
-        documentation = {
-          border = border "CmpDocBorder",
-        },
+        -- completion = {
+        --   side_padding = (cmp_style ~= "atom" and cmp_style ~= "atom_colored") and 1 or 0,
+        --   scrollbar = false,
+        -- },
+        -- documentation = {
+        --   border = border "CmpDocBorder",
+        -- },
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
       },
       snippet = {
         expand = function(args)
@@ -182,7 +184,8 @@ return {
       },
     }
 
-    options.window.completion.border = border "CmpBorder"
+    -- options.window.completion.border = border "CmpBorder"
+    -- options.window.completion.border = border "CmpBorder"
 
     return options
   end,

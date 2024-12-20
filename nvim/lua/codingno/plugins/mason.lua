@@ -1,8 +1,11 @@
 return {
-	"williamboman/mason.nvim",
-	cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
-config = function()
-      require("mason").setup({})
-end
+  "williamboman/mason.nvim",
+  lazy = false,
+  cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
+	dependencies = { 'williamboman/mason-lspconfig.nvim' },
+  config = function()
+    require("mason").setup({})
+    require("mason-lspconfig").setup()
+  end
 
 }
