@@ -32,3 +32,8 @@ opt.clipboard:append("unnamedplus") -- use system clipboard as default register
 
 -- Set the number of lines to keep above and below the cursor
 opt.scrolloff = 15
+
+-- opt.wrap = true
+opt.linebreak = true
+
+opt.colorcolumn = "80"

@@ -20,6 +20,9 @@ return {
 
 		local lspconfig = require("lspconfig")
 		lspconfig.gopls.setup({
+      -- handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
 			settings = {
 				gopls = {
 					analyses = {
@@ -40,16 +43,85 @@ return {
 			},
 		});
 
+    -- Konfigurasi Vacuum untuk efm
+    local vacuum = {
+      lintCommand = "vacuum lint --format json ${INPUT}",
+      lintFormats = { "%f:%l:%c: %m" },
+      lintIgnoreExitCode = true,
+      lintSource = "vacuum",
+      lintStdin = false,
+      formatCommand = "", -- vacuum tidak punya formatter
+      formatStdin = false,
+    }
+
+    lspconfig.efm.setup({
+      init_options = { documentFormatting = false, documentRangeFormatting = false },
+      filetypes = { 
+        "yaml", 
+        "json",
+      },
+      settings = {
+        rootMarkers = { ".git/" },
+        languages = {
+          yaml = { vacuum },
+          json = { vacuum },
+        },
+      },
+    })
+
     lspconfig.tsserver.setup {
       handlers = handlers,
       on_attach = on_attach,
+      root_dir = require('lspconfig.util').root_pattern("tsconfig.json"),
       capabilities = capabilities,
-      init_options = {
-        preferences = {
-          disableSuggestions = true,
-        }
-      }
+      -- init_options = {
+      --   preferences = {
+      --     disableSuggestions = true,
+      --   }
+      -- }
     }
+
+    lspconfig.svelte.setup {
+      on_attach = function(client, bufnr)
+        -- optionally auto reload
+        vim.api.nvim_create_autocmd("BufWritePost", {
+          pattern = { "*.svelte", "+*.ts" },
+          callback = function(ctx)
+            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+          end,
+        })
+      end,
+      capabilities = capabilities,
+    }
+
+    lspconfig.pyright.setup {
+      handlers = handlers,
+      on_attach = on_attach,
+      capabilities = capabilities,
+      settings = {
+        python = {
+          analysis = {
+            typeCheckingMode = "basic",
+            autoSearchPaths = true,
+            useLibraryCodeForTypes = true,
+          },
+        },
+      },
+      on_init = function(client)
+        local path = client.workspace_folders[1].name
+        local venv = path .. '/.venv/bin/python'
+        if vim.fn.executable(venv) == 1 then
+          client.config.settings.python = {
+            pythonPath = venv
+          }
+        end
+      end,
+    }
+
+    vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+      pattern = { "+*.ts", "+*.js" },
+      command = "set filetype=typescript",
+    })
 
     -- List of LSP servers
     local servers = {
