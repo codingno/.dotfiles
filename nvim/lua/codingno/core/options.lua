@@ -29,3 +29,12 @@ opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line, or
 
 -- clipboard
 opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+
+-- Set the number of lines to keep above and below the cursor
+-- opt.scrolloff = 15
+opt.scrolloff = 0
+
+-- opt.wrap = true
+opt.linebreak = true
+
+opt.colorcolumn = "80"

@@ -1,46 +1,72 @@
 return {
-	"folke/which-key.nvim",
-	{ "folke/neoconf.nvim", cmd = "Neoconf" },
-	"folke/neodev.nvim",
-	"rktjmp/lush.nvim",
-	-- { 
-		-- "codingno",
-		-- dir = "~/personal/colorscheme/codingno", 
-		-- lazy = false,
-	-- },
-	"neovim/nvim-lspconfig",
-	"hrsh7th/cmp-nvim-lsp",
+  "folke/which-key.nvim",
+  { "folke/neoconf.nvim", cmd = "Neoconf" },
+  "folke/neodev.nvim",
+  "rktjmp/lush.nvim",
+  "neovim/nvim-lspconfig",
+  -- "hrsh7th/cmp-nvim-lsp",
   { "christoomey/vim-tmux-navigator" , lazy = false },
   {
-    "codingno/harpoon",
-    branch = "harpoon2",
-    requires = { {"nvim-lua/plenary.nvim"} },
-    config= function ()
-      local harpoon = require("harpoon")
-      harpoon:setup({
-        projects = {
-          save_on_toggle = true,
-        },
-      })
-     vim.keymap.set("n", "<leader>a", function() harpoon:list():append()  end)
-     vim.keymap.set("n", "<A-h>", function() harpoon.ui:toggle_quick_menu(harpoon:list())  end)
-     vim.keymap.set("n", "<A-u>", function() harpoon:list():select(1)  end)
-     vim.keymap.set("n", "<A-i>", function() harpoon:list():select(2)  end)
-     vim.keymap.set("n", "<A-o>", function() harpoon:list():select(3)  end)
-     vim.keymap.set("n", "<A-;>", function() harpoon:list():select(4)  end)
-    end,
-  },
-  {
-     "folke/trouble.nvim",
-     lazy = false,
-     dependencies = { "nvim-tree/nvim-web-devicons" },
-     opts = {
+    "folke/trouble.nvim",
+    lazy = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
       -- your configuration comes here
+      modes = {
+        preview_float = {
+          preview = {
+            type = "main",
+            check_dry_run = true,
+          },
+        },
+      },
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
+    },
+    keys = {
+      -- { "<leader>t" , "<cmd> TroubleToggle document_diagnostics severity=ERROR <CR>", desc = "Toggle Trouble Error" },
+      {
+        "<leader>t",
+        function()
+          local trouble = require("trouble")
+          if trouble.is_open() then
+            -- Jika kita sudah berada di dalam jendela trouble, maka tutup
+            if vim.bo.filetype == "Trouble" then
+              vim.cmd("TroubleToggle document_diagnostics")
+            else
+              -- Jika terbuka tapi kita di luar, panggil open lagi untuk pindah fokus
+              -- Untuk v2, memanggil open saat sudah terbuka akan memindahkan kursor ke sana
+              vim.cmd("Trouble document_diagnostics focus=true")
+            end
+          else
+            -- Jika tertutup, buka dengan filter ERROR
+            -- Catatan: v2 menggunakan string mode, v3 menggunakan tabel
+            vim.cmd("TroubleToggle document_diagnostics severity=ERROR")
+          end
+        end,
+        desc = "Smart Toggle/Focus Trouble",
       },
-      keys = {
-        { "<leader>t" , "<cmd> TroubleToggle <CR>", desc = "Search current word" },
-      }
+      {
+        "<leader>k",
+        function()
+          local trouble = require("trouble")
+          if trouble.is_open() then
+            -- Jika kita sudah berada di dalam jendela trouble, maka tutup
+            if vim.bo.filetype == "Trouble" then
+              vim.cmd("TroubleToggle workspace_diagnostics")
+            else
+              -- Jika terbuka tapi kita di luar, panggil open lagi untuk pindah fokus
+              -- Untuk v2, memanggil open saat sudah terbuka akan memindahkan kursor ke sana
+              vim.cmd("Trouble workspace_diagnostics focus=true")
+            end
+          else
+            -- Jika tertutup, buka dengan filter ERROR
+            -- Catatan: v2 menggunakan string mode, v3 menggunakan tabel
+            vim.cmd("TroubleToggle workspace_diagnostics severity=ERROR")
+          end
+        end,
+        desc = "Smart Toggle/Focus Trouble Workspace Diagnostics",
+      },
+    }
   },
 }

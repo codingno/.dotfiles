@@ -8,8 +8,23 @@ return {
     vim.g.loaded_netrwPlugin = 1
 
     nvimtree.setup({
+      sort = {
+        sorter = function(nodes)
+          table.sort(nodes, function(a, b)
+            -- 1. Keep folders above files
+            if a.type ~= b.type then
+              return a.type < b.type
+            end
+
+            -- 2. Sort the names in descending order (Z -> A)
+            return a.name > b.name
+          end)
+        end,
+      },
       view = {
         relativenumber = true,
+        width = 40,
+        side = "right",
       },
       actions = {
         open_file = {
@@ -26,9 +41,8 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-    vim.keymap.set("n", "<C-n>", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "Toggle file explorer on current file" })
-    -- vim.keymap.set("n", "<Enter>", "<cmd>NvimTreeClose<CR>", { desc = "Close Explorer" })
+    vim.keymap.set("n", "<C-n>", ":NvimTreeFindFileToggle <CR>", { desc = "Toggle file explorer on current file", noremap = true, silent = true })
+    vim.keymap.set("n", "<Space>e", function() vim.cmd("NvimTreeFocus") end, { desc = "File explorer focus", noremap = true, silent = true})
 
-  end
+  end,
 }

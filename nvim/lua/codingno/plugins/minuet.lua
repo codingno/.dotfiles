@@ -1,0 +1,56 @@
+return {
+  -- {
+  --   "milanglacier/minuet-ai.nvim",
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require('minuet').setup({
+  --       provider = 'gemini',
+  --       add_single_line_entry = true, -- Solusi utama
+  --       throttle = 2000, -- Only 1 request every 2 seconds max
+  --       debounce = 400,  -- Wait for 400ms of silence before sending
+  --       provider_options = {
+  --         gemini = {
+  --           model = "gemini-2.5-flash-lite", -- This has the higher 1,000 RPD limit
+  --           stream = true,
+  --         },
+  --       },
+  --       virtualtext = {
+  --           show = true,
+  --           auto_trigger_ft = { "*" },
+  --           keymap = {
+  --               accept = "<C-J>",
+  --               accept_line = "<A-j>",
+  --           },
+  --       },
+  --     })
+  --
+  --     -- require('cmp').setup {
+  --     --   sources = {
+  --     --     {
+  --     --       -- Include minuet as a source to enable autocompletion
+  --     --       { name = 'minuet' },
+  --     --       -- and your other sources
+  --     --     }
+  --     --   },
+  --     --   performance = {
+  --     --     -- It is recommended to increase the timeout duration due to
+  --     --     -- the typically slower response speed of LLMs compared to
+  --     --     -- other completion sources. This is not needed when you only
+  --     --     -- need manual completion.
+  --     --     fetching_timeout = 2000,
+  --     --   },
+  --     -- }
+  --     --
+  --     --
+  --     -- -- If you wish to invoke completion manually,
+  --     -- -- The following configuration binds `A-y` key
+  --     -- -- to invoke the configuration manually.
+  --     -- require('cmp').setup {
+  --     --   mapping = {
+  --     --     ["<A-y>"] = require('minuet').make_cmp_map()
+  --     --     -- and your other keymappings
+  --     --   },
+  --     -- }
+  --   end,
+  -- }
+}
